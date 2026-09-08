@@ -1,0 +1,8 @@
+*.php
+api/
+backend/
+node_modules/
+.git/
+package.json
+package-lock.json
+capacitor.config.json

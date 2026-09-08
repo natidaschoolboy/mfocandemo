@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Android build outputs & caches
+android/app/build/
+android/.gradle/
+android/build/
+*.dex
+*.apk
+
+# iOS build outputs
+ios/App/build/
+ios/App/Pods/
+
+# Environment files
+.env

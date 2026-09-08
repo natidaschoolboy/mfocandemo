@@ -1,0 +1,9 @@
+{
+  "appId": "za.org.mfocan.app",
+  "appName": "Mfocan App",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https",
+    "cleartext": true
+  }
+}

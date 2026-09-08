@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MFOCAN - Sign Up</title>
+    <link rel="stylesheet" type="text/css" href="css/ThatStyle.css">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    
+</head>
+<body>
+    <header style="width: 100%; color: black; background-color: white;" id="#">
+        <center><a href="#"><img src="https://see.fontimg.com/api/renderfont4/p72nK/eyJyIjoiZnMiLCJoIjo4MSwidyI6MTI1MCwiZnMiOjY1LCJmZ2MiOiIjMDAwMDAwIiwiYmdjIjoiI0ZGRkZGRiIsInQiOjF9/bUZPQ0FO/dripinkpersonaluse-black.png" alt="Dripping fonts"></a>
+            <strong><p style="color: black">System Integrations</p></strong>
+        </center>
+    </header>
+    <div class="sign">
+        <center>
+            <form id="signupForm" action="/signup" method="POST" class="sign-form">
+                <h2>Sign Up</h2>
+                <input type="text" name="username" class="enter-form" placeholder="Username" required><br><br>
+                <input type="password" name="password" class="enter-form" placeholder="Password" required><br><br>
+                <input type="password" name="confirmPassword" class="enter-form" placeholder="Confirm Password" required><br><br>
+                <button class="btn" type="submit">Sign Up</button><br>
+                <p id="message" style="color: red; margin-top: 10px;"></p>
+                <a href="Sign-In.html" style="color: blue;"><p>Already have an account? Sign In</p></a>
+            </form>
+        </center>
+    </div>
+
+    <section class="end">
+        <div class="last-text">
+            <p>&copy;Copyrighted by MFOCANS 2024. All Rights Reserved</p>
+        </div>
+        <div class="top">
+            <a href="#"><i class="bx bx-up-arrow-alt"></i></a>
+        </div>
+    </section>
+
+    <script>
+        const signupForm = document.getElementById('signupForm');
+        const messageDisplay = document.getElementById('message');
+
+        signupForm.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent default form submission (which would cause a full page reload)
+
+            messageDisplay.textContent = ''; // Clear previous messages
+
+            const username = signupForm.username.value;
+            const password = signupForm.password.value;
+            const confirmPassword = signupForm.confirmPassword.value;
+
+            // Basic client-side validation (optional, but good practice)
+            if (password !== confirmPassword) {
+                messageDisplay.style.color = 'red';
+                messageDisplay.textContent = 'Passwords do not match!';
+                return;
+            }
+
+            try {
+                const response = await fetch('/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json' // Tell server we're sending JSON
+                    },
+                    body: JSON.stringify({ username, password, confirmPassword }) // Send data as JSON
+                });
+
+                // Server responds with .send() which sends plain text.
+                // We need to handle it as text, or modify server to send JSON.
+                // For a more robust API, server should send JSON:
+                // res.status(XXX).json({ success: false, message: '...' })
+                // Let's assume server *should* send text messages for now.
+                const responseText = await response.text(); 
+
+                if (response.ok) { // Status code 200-299 indicates success
+                    messageDisplay.style.color = 'green';
+                    messageDisplay.textContent = 'Sign up successful! Redirecting...';
+                    // If server redirects (res.redirect), the browser will follow it automatically.
+                    // If server sends a success message, you might manually redirect:
+                    window.location.href = '/index.html'; 
+                } else {
+                    // Server sent an error status (e.g., 400, 409, 500)
+                    messageDisplay.style.color = 'red';
+                    messageDisplay.textContent = responseText; // Display the error message from the server
+                }
+            } catch (error) {
+                console.error('Error during signup:', error);
+                messageDisplay.style.color = 'red';
+                messageDisplay.textContent = 'An error occurred during signup. Please try again.';
+            }
+        });
+    </script>
+</body>
+</html>
