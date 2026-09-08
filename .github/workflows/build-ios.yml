@@ -26,16 +26,11 @@ jobs:
           npx cap add ios || true
           npx cap sync ios
 
-      - name: Install CocoaPods
-        run: |
-          cd ios/App
-          pod install
-
-      - name: Build Xcode Project
+      - name: Build Xcode Project (Simulator App)
         run: |
           xcodebuild -workspace ios/App/App.xcworkspace \
                      -scheme App \
-                     -sdk iphoneos \
+                     -sdk iphonesimulator \
                      -configuration Release \
                      -derivedDataPath build \
                      CODE_SIGNING_ALLOWED=NO \
@@ -45,4 +40,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ios-build
-          path: ios/App/build/Build/Products/Release-iphoneos/App.app
+          path: ios/App/build/Build/Products/Release-iphonesimulator/App.app
