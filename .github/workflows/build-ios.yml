@@ -23,7 +23,7 @@ jobs:
           npm install --legacy-peer-deps
           npm install @capacitor/core @capacitor/cli @capacitor/ios --save-dev
 
-      - name: Build Web Assets & Capacitor Sync
+      - name: Build Web Assets & Sync
         run: |
           mkdir -p www
           npx cap add ios || true
@@ -31,14 +31,16 @@ jobs:
 
       - name: Build Xcode Project
         run: |
-          if [ -d "ios/App/App.xcworkspace" ]; then
-            xcodebuild -workspace ios/App/App.xcworkspace -scheme App -sdk iphonesimulator -configuration Release -derivedDataPath build CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO
-          else
-            xcodebuild -project ios/App/App.xcodeproj -scheme App -sdk iphonesimulator -configuration Release -derivedDataPath build CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO
-          fi
+          xcodebuild -workspace ios/App/App.xcworkspace \
+                     -scheme App \
+                     -sdk iphonesimulator \
+                     -configuration Release \
+                     -derivedDataPath build \
+                     CODE_SIGNING_ALLOWED=NO \
+                     CODE_SIGNING_REQUIRED=NO
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ios-build
-          path: ios/App/build/Build/Products/Release-iphonesimulator/App.app
+          path: ios/App/build/Build/Products/Release-iphonesimulator/*.app
