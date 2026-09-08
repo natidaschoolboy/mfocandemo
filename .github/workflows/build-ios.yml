@@ -31,16 +31,28 @@ jobs:
 
       - name: Build Xcode Project
         run: |
-          xcodebuild -workspace ios/App/App.xcworkspace \
-                     -scheme App \
-                     -sdk iphonesimulator \
-                     -configuration Release \
-                     -derivedDataPath build \
-                     CODE_SIGNING_ALLOWED=NO \
-                     CODE_SIGNING_REQUIRED=NO
+          if [ -d "ios/App/App.xcworkspace" ]; then
+            xcodebuild -workspace ios/App/App.xcworkspace \
+                       -scheme App \
+                       -sdk iphonesimulator \
+                       -configuration Release \
+                       -derivedDataPath build \
+                       CONFIGURATION_BUILD_DIR=build/output \
+                       CODE_SIGNING_ALLOWED=NO \
+                       CODE_SIGNING_REQUIRED=NO
+          else
+            xcodebuild -project ios/App/App.xcodeproj \
+                       -scheme App \
+                       -sdk iphonesimulator \
+                       -configuration Release \
+                       -derivedDataPath build \
+                       CONFIGURATION_BUILD_DIR=build/output \
+                       CODE_SIGNING_ALLOWED=NO \
+                       CODE_SIGNING_REQUIRED=NO
+          fi
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ios-build
-          path: ios/App/build/Build/Products/Release-iphonesimulator/*.app
+          path: ios/App/build/output/*.app
