@@ -26,6 +26,11 @@ jobs:
           npx cap add ios || true
           npx cap sync ios
 
+      - name: Install CocoaPods
+        run: |
+          cd ios/App
+          pod install
+
       - name: Build Xcode Project
         run: |
           xcodebuild -workspace ios/App/App.xcworkspace \
